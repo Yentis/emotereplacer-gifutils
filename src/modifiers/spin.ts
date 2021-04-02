@@ -1,5 +1,5 @@
-import GIFEncoder from 'gifencoder';
 import Jimp from 'jimp';
+import GIFEncoder from '../classes/gifencoder';
 import SpecialCommand from '../classes/specialCommand';
 import {
   getGifFromBuffer, getBuffer, setEncoderProperties, alignGif, preparePNGVariables
@@ -47,7 +47,7 @@ export async function createSpinningGIF(options: SpecialCommand): Promise<Buffer
     );
 
     const frames = alignGif(inputGif.frames, interval);
-    for (let i = 0; i < frames.length; i += 1) {
+    for (let i = 0; i < frames.length; i++) {
       encoder.setDelay(frames[i].delayCentisecs * 10);
       const adjustedImg = new Jimp(max, max);
 
@@ -99,7 +99,7 @@ export async function createSpinningPNG(options: SpecialCommand): Promise<Buffer
     getBuffer(encoder.createReadStream()).then((buffer) => resolve(buffer)).catch(reject);
     setEncoderProperties(encoder, options.value * 10);
 
-    for (let i = 0; i < interval; i += 1) {
+    for (let i = 0; i < interval; i++) {
       const rotatedImage = new Jimp(resizedImage.bitmap);
       rotatedImage.rotate(i * degrees, false);
       encoder.addFrame(rotatedImage.bitmap.data);

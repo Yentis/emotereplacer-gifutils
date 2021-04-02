@@ -1,9 +1,9 @@
-import GIFEncoder from 'gifencoder';
 import bent from 'bent';
 import { Gif, GifFrame, GifUtil } from 'gifwrap';
-import toStream from 'buffer-to-stream';
 import { Stream } from 'stream';
 import Jimp from 'jimp';
+import GIFEncoder from './classes/gifencoder';
+import toStream from './buffer-to-stream';
 import SpecialCommand from './classes/specialCommand';
 
 import * as rotate from './modifiers/rotate';
@@ -66,7 +66,7 @@ export function alignGif(frames: GifFrame[], interval: number): GifFrame[] {
   const amountCopies = alignedFrames.length / frames.length;
   let currentCopy = 0;
 
-  for (let i = 0; i < framesToDelete; i += 1) {
+  for (let i = 0; i < framesToDelete; i++) {
     const frameToDelete = Math.floor(Math.random() * frames.length - 1) + 1;
     alignedFrames.splice(frameToDelete + currentCopy * frames.length, 1);
     // Keep shifting copy so each copy loses about the same amount of frames

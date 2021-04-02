@@ -1,7 +1,7 @@
 const path = require('path');
-const webpack = require('webpack');
 
 module.exports = {
+  // devtool: 'inline-source-map',
   mode: 'production',
   entry: './src/index.ts',
   module: {

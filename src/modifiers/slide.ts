@@ -1,5 +1,5 @@
-import GIFEncoder from 'gifencoder';
 import Jimp from 'jimp';
+import GIFEncoder from '../classes/gifencoder';
 import SpecialCommand from '../classes/specialCommand';
 import {
   getGifFromBuffer, getBuffer, setEncoderProperties, alignGif, preparePNGVariables
@@ -40,7 +40,7 @@ export async function createSlidingGIF(options: SpecialCommand): Promise<Buffer>
     const frames = alignGif(inputGif.frames, interval);
 
     const direction = options.name === 'sliderev' ? 1 : -1;
-    for (let i = 0; i < frames.length; i += 1) {
+    for (let i = 0; i < frames.length; i++) {
       encoder.setDelay(frames[i].delayCentisecs * 10);
       const shiftedBitmap = getShiftedFrameData(new Jimp(frames[i].bitmap), shift);
       encoder.addFrame(shiftedBitmap.data);
@@ -71,7 +71,7 @@ export async function createSlidingPNG(options: SpecialCommand): Promise<Buffer>
     setEncoderProperties(encoder, 40);
 
     const direction = options.name === 'sliderev' ? 1 : -1;
-    for (let i = 0; i < interval; i += 1) {
+    for (let i = 0; i < interval; i++) {
       const frameData = getShiftedFrameData(image, shift);
       encoder.addFrame(frameData.data);
       shift = (shift + direction * shiftSize) % width;

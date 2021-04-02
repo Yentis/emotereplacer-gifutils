@@ -1,5 +1,5 @@
-import GIFEncoder from 'gifencoder';
 import Jimp from 'jimp';
+import GIFEncoder from '../classes/gifencoder';
 import SpecialCommand from '../classes/specialCommand';
 import {
   getGifFromBuffer, getBuffer, setEncoderProperties, preparePNGVariables
@@ -26,7 +26,8 @@ export async function createRotatedGIF(options: SpecialCommand): Promise<Buffer>
     getBuffer(encoder.createReadStream()).then((buffer) => resolve(buffer)).catch(reject);
     setEncoderProperties(encoder);
 
-    const degrees = options.value;
+    // Flip the rotation because jimp rotates the wrong way
+    const degrees = -(options.value);
     const {
       margin
     } = prepareRotateVariables(
@@ -35,7 +36,7 @@ export async function createRotatedGIF(options: SpecialCommand): Promise<Buffer>
     );
 
     const { frames } = inputGif;
-    for (let i = 0; i < frames.length; i += 1) {
+    for (let i = 0; i < frames.length; i++) {
       encoder.setDelay(frames[i].delayCentisecs * 10);
       const adjustedImg = new Jimp(max, max);
 

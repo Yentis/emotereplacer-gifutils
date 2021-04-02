@@ -3,9 +3,9 @@ import GifUtils from './src/gifutils';
 function run() {
   GifUtils.modifyGif({
     url: 'https://raw.githubusercontent.com/Yentis/yentis.github.io/master/emotes/images/663.gif',
-    options: [['rotate', '45']],
+    options: [['spin']],
     commands: { normal: [], priority: [], special: [] },
-    gifsiclePath: 'C:/Users/Yentl/AppData/Roaming/BetterDiscord/plugins/gifsicle.exe'
+    gifsiclePath: '<gifsicle absolute path here>'
   }).catch((error) => console.error(error));
 }
 

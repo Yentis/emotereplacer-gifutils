@@ -1,5 +1,5 @@
-import GIFEncoder from 'gifencoder';
 import Jimp from 'jimp';
+import GIFEncoder from '../classes/gifencoder';
 import SpecialCommand from '../classes/specialCommand';
 import {
   getGifFromBuffer, getBuffer, setEncoderProperties, alignGif, preparePNGVariables
@@ -75,7 +75,7 @@ export async function createWigglingGIF(options: SpecialCommand): Promise<Buffer
     let { shift, left } = wiggleVariables;
     const frames = alignGif(inputGif.frames, interval);
 
-    for (let i = 0; i < frames.length; i += 1) {
+    for (let i = 0; i < frames.length; i++) {
       encoder.setDelay(frames[i].delayCentisecs * 10);
       const wiggledBitmap = getWiggledFrameData(
         new Jimp(frames[i].bitmap),
@@ -119,7 +119,7 @@ export async function createWigglingPNG(options: SpecialCommand): Promise<Buffer
     getBuffer(encoder.createReadStream()).then(resolve).catch(reject);
     setEncoderProperties(encoder, 80);
 
-    for (let i = 0; i < interval; i += 1) {
+    for (let i = 0; i < interval; i++) {
       // Wiggle frame
       const wiggledBitmap = getWiggledFrameData(image, shift, left, {
         stripeHeight,

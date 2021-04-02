@@ -24,7 +24,15 @@ module.exports = {
     'import/extensions': 'off',
     'no-console': 'off',
     '@typescript-eslint/no-floating-promises': ['error'],
-    'no-bitwise': 'off'
+    'no-bitwise': 'off',
+    'prefer-destructuring': ['error', {
+      'array': false,
+      'object': true
+    }, {
+      'enforceForRenamedProperties': false
+    }],
+    'no-continue': 'off',
+    'no-plusplus': 'off'
   },
   settings: {
     'import/resolver': {

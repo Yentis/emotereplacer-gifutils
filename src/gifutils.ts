@@ -1,7 +1,7 @@
-import toStream from 'buffer-to-stream';
 import bent from 'bent';
 import { Stream } from 'stream';
-import Gifsicle from './gifsicle-stream';
+import toStream from './buffer-to-stream';
+import Gifsicle from './classes/gifsicle';
 import SpecialCommand from './classes/specialCommand';
 import {
   infiniteEmote,
@@ -158,7 +158,7 @@ async function modifyGif(
       .on('error', (err) => reject(err))
       .on('end', () => {
         if (buffers.length === 0 && retryCount < 5) {
-          retryCount += 1;
+          retryCount++;
           resolve(modifyGif(data, options, gifsiclePath, retryCount));
         } else {
           resolve(Buffer.concat(buffers));
@@ -216,7 +216,7 @@ async function processSpecialCommands(
 
   console.info(`EmoteReplacer: Commands count: ${commands.length}`);
 
-  for (let i = 0; i < commands.length; i += 1) {
+  for (let i = 0; i < commands.length; i++) {
     const value = (commands[i].param || 0).toString();
     const size = (options.size || 1).toString();
     // eslint-disable-next-line no-await-in-loop
