@@ -1,6 +1,6 @@
 import { GifUtil, GifFrame } from 'gifwrap';
-import GIFEncoder from 'gifencoder';
 import Jimp from 'jimp';
+import GIFEncoder from '../classes/gifencoder';
 import {
   getGifFromBuffer, getBuffer, setEncoderProperties, preparePNGVariables
 } from '../gifhelper';
@@ -17,8 +17,8 @@ function lowestCommonDenominator(a: number, b: number): number {
 function padGif(frames: GifFrame[], amountCopies: number): GifFrame[] {
   if (amountCopies < 2) return GifUtil.cloneFrames(frames);
   const copiedFrames = [];
-  for (let i = 0; i < frames.length; i += 1) {
-    for (let j = 0; j < amountCopies; j += 1) {
+  for (let i = 0; i < frames.length; i++) {
+    for (let j = 0; j < amountCopies; j++) {
       copiedFrames.push(new GifFrame(frames[i].bitmap));
     }
   }
@@ -91,7 +91,7 @@ export async function createShakingGIF(options: SpecialCommand): Promise<Buffer>
     getBuffer(encoder.createReadStream()).then((buffer) => resolve(buffer)).catch(reject);
     setEncoderProperties(encoder, delay * 10);
 
-    for (let i = 0; i < frames.length; i += 1) {
+    for (let i = 0; i < frames.length; i++) {
       state += incrValue;
       if (state >= interval) {
         state -= interval;
@@ -132,7 +132,7 @@ export async function createShakingPNG(options: SpecialCommand): Promise<Buffer>
     getBuffer(encoder.createReadStream()).then((buffer) => resolve(buffer)).catch(reject);
     setEncoderProperties(encoder, options.value * 10);
 
-    for (let i = 0; i < 4; i += 1) {
+    for (let i = 0; i < 4; i++) {
       const frame = new Jimp(width, height, 0x00);
       switch (i) {
         case 0:

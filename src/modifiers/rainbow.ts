@@ -1,6 +1,6 @@
-import GIFEncoder from 'gifencoder';
 import { JimpBitmap } from 'gifwrap';
 import Jimp from 'jimp';
+import GIFEncoder from '../classes/gifencoder';
 import SpecialCommand from '../classes/specialCommand';
 import {
   getGifFromBuffer, getBuffer, setEncoderProperties, alignGif, preparePNGVariables
@@ -78,8 +78,8 @@ function shiftColor(
 function hue2rgb(p: number, q: number, _t: number): number {
   let t = _t;
 
-  if (t < 0) t += 1;
-  else if (t > 1) t -= 1;
+  if (t < 0) t++;
+  else if (t > 1) t--;
   if (t < 1 / 6) return p + (q - p) * 6 * t;
   if (t < 1 / 2) return q;
   if (t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6;
@@ -115,7 +115,7 @@ function shiftColors(
     if (bitmap.data[i + 3] > 0) { // only recolor if non-transparent
       let colors = shiftColor(bitmap.data, i, interval, randomBlack, randomWhite);
 
-      while (colors[0] > 1) colors[0] -= 1;
+      while (colors[0] > 1) colors[0]--;
       colors = hsl2rgb(colors[0], colors[1], colors[2]);
       bitmap.data.set(colors, i);
     }
@@ -135,7 +135,7 @@ export async function createRainbowGIF(options: SpecialCommand): Promise<Buffer>
     const randomBlack = Math.random();
     const randomWhite = Math.random();
 
-    for (let i = 0; i < frames.length; i += 1) {
+    for (let i = 0; i < frames.length; i++) {
       encoder.setDelay(frames[i].delayCentisecs * 10);
       const frame = frames[i];
       shiftColors(frame.bitmap, (i % interval) / interval, randomBlack, randomWhite);
@@ -166,7 +166,7 @@ export async function createRainbowPNG(options: SpecialCommand): Promise<Buffer>
     const randomBlack = Math.random();
     const randomWhite = Math.random();
 
-    for (let i = 0; i < amountFrames; i += 1) {
+    for (let i = 0; i < amountFrames; i++) {
       shiftColors(image.bitmap, interval, randomBlack, randomWhite);
       encoder.addFrame(image.bitmap.data);
     }

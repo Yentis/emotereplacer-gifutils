@@ -73,6 +73,7 @@ export default class Gifsicle extends Stream {
       this.process.stdin.on('error', this.onError.bind(this));
 
       this.process.on('exit', (exitCode) => {
+        if (this.hasEnded) return;
         if (exitCode && exitCode > 0 && !this.hasEnded) {
           this.onError(new Error(`The gifsicle process exited with a non-zero exit code: ${exitCode}`));
         }
@@ -88,7 +89,9 @@ export default class Gifsicle extends Stream {
         .on('end', () => {
           this.process = undefined;
           if (this.hasEnded) return;
-          if (!this.seenDataOnStdout) {
+          if (this.seenDataOnStdout) {
+            this.emit('end');
+          } else {
             this.onError(new Error('Gifsicle: STDOUT stream ended without emitting any data.'));
           }
           this.hasEnded = true;

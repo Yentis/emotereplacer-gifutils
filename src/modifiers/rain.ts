@@ -1,5 +1,5 @@
-import GIFEncoder from 'gifencoder';
 import Jimp from 'jimp';
+import GIFEncoder from '../classes/gifencoder';
 import SpecialCommand from '../classes/specialCommand';
 import {
   getGifFromBuffer, getBuffer, setEncoderProperties, preparePNGVariables
@@ -85,7 +85,7 @@ class Drop {
 function rainImageGenerator(width: number, height: number, glitter: boolean, delay: number) {
   // Generate single drops
   const drops: Drop[] = [];
-  for (let i = 0, amount = (width + height) / 5; i < amount; i += 1) {
+  for (let i = 0, amount = (width + height) / 5; i < amount; i++) {
     drops.push(new Drop(width, height, delay));
   }
 
@@ -102,10 +102,10 @@ function rainImageGenerator(width: number, height: number, glitter: boolean, del
     next() {
       const img = new Jimp(width, height, 0x00);
       // Draw raindrops
-      for (let i = 0; i < drops.length; i += 1) {
+      for (let i = 0; i < drops.length; i++) {
         const drop = drops[i];
-        for (let j = 0; j < drop.len; j += 1) {
-          for (let k = 0; k < drop.size; k += 1) {
+        for (let j = 0; j < drop.len; j++) {
+          for (let k = 0; k < drop.size; k++) {
             const pos = (Math.floor(drop.y + j) * width + Math.floor(drop.x + k)) * 4;
             img.bitmap.data[pos + 0] = drop.r;
             img.bitmap.data[pos + 1] = drop.g;
@@ -139,7 +139,7 @@ export async function createRainingGIF(options: SpecialCommand): Promise<Buffer>
       frames[0].delayCentisecs
     );
 
-    for (let i = 0; i < frames.length; i += 1) {
+    for (let i = 0; i < frames.length; i++) {
       encoder.setDelay(frames[i].delayCentisecs * 10);
       const frame = new Jimp(frames[i].bitmap);
       frame.blit(rainGenerator.next(), 0, 0);
@@ -170,7 +170,7 @@ export async function createRainingPNG(options: SpecialCommand): Promise<Buffer>
     const glitter = options.value === 1;
     const rainGenerator = rainImageGenerator(width, height, glitter, delay);
 
-    for (let i = 0; i < interval; i += 1) {
+    for (let i = 0; i < interval; i++) {
       const img = new Jimp(image.bitmap);
       img.blit(rainGenerator.next(), 0, 0);
       encoder.addFrame(img.bitmap.data);

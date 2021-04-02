@@ -1,6 +1,6 @@
-import GIFEncoder from 'gifencoder';
 import { JimpBitmap } from 'gifwrap';
 import Jimp from 'jimp';
+import GIFEncoder from '../classes/gifencoder';
 import SpecialCommand from '../classes/specialCommand';
 import {
   getGifFromBuffer, getBuffer, setEncoderProperties, alignGif, preparePNGVariables
@@ -8,7 +8,7 @@ import {
 
 function resetInfiniteScales(scalesAmount: number, scaleDiff: number, scaleStep: number): number[] {
   const scales = [];
-  for (let depth = 0; depth < scalesAmount; depth += 1) {
+  for (let depth = 0; depth < scalesAmount; depth++) {
     scales.push((scalesAmount - depth - 1) * scaleDiff + scaleStep);
   }
   return scales;
@@ -17,7 +17,7 @@ function resetInfiniteScales(scalesAmount: number, scaleDiff: number, scaleStep:
 function getInfiniteShiftedFrameData(frameBitmap: JimpBitmap, scales: number[]): Jimp['bitmap'] {
   const newFrame = new Jimp(frameBitmap.width, frameBitmap.height, 0x00);
   // Add appropriate frame with each depth scale
-  for (let depth = 0; depth < scales.length; depth += 1) {
+  for (let depth = 0; depth < scales.length; depth++) {
     const scaledFrame = new Jimp(frameBitmap);
     scaledFrame.scale(scales[depth]);
     const dx = (scaledFrame.bitmap.width - frameBitmap.width) / 2;
@@ -38,7 +38,7 @@ function shiftInfiniteScales(_scales: number[], scaleDiff: number, scaleStep: nu
   if (scales[0] >= scales.length * scaleDiff) {
     scales = resetInfiniteScales(scales.length, scaleDiff, scaleStep);
   } else {
-    for (let depth = 0; depth < scales.length; depth += 1) {
+    for (let depth = 0; depth < scales.length; depth++) {
       scales[depth] += scaleStep;
     }
   }
@@ -60,7 +60,7 @@ export async function createInfiniteGIF(options: SpecialCommand): Promise<Buffer
     let scales = resetInfiniteScales(scalesAmount, scaleDiff, scaleStep);
     const frames = alignGif(inputGif.frames, scaleDiff / scaleStep);
 
-    for (let i = 0; i < frames.length; i += 1) {
+    for (let i = 0; i < frames.length; i++) {
       encoder.setDelay(frames[i].delayCentisecs * 10);
       const frameData = getInfiniteShiftedFrameData(frames[i].bitmap, scales);
       encoder.addFrame(frameData.data);
@@ -93,7 +93,7 @@ export async function createInfinitePNG(options: SpecialCommand): Promise<Buffer
     const frames = scaleDiff / scaleStep - 1;
     let scales = resetInfiniteScales(scalesAmount, scaleDiff, scaleStep);
 
-    for (let i = 0; i < frames; i += 1) {
+    for (let i = 0; i < frames; i++) {
       const frameData = getInfiniteShiftedFrameData(image.bitmap, scales);
       encoder.addFrame(frameData.data);
       // Shift scales for next frame
