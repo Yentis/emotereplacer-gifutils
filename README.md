@@ -1,4 +1,4 @@
-# BetterDiscord Emote Replacer - Gif Utils
+# BetterDiscord EmoteReplacer - Gif Utils
 For processing gifs and gif modifiers
 
 # Usage
