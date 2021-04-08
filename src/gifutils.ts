@@ -322,7 +322,7 @@ async function processCommands(data: Data): Promise<Buffer> {
 export default class GifUtils {
   name = 'GifUtils';
 
-  static async modifyGif(_data: Data): Promise<string> {
+  static async modifyGif(_data: Data): Promise<Buffer> {
     const data = _data;
     console.info('EmoteReplacer: Got request', JSON.stringify(data));
     data.commands = getCommands(data.options);
@@ -333,6 +333,6 @@ export default class GifUtils {
       length: buffer.length
     });
 
-    return buffer.toString('base64');
+    return buffer;
   }
 }
