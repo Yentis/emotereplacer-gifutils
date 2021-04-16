@@ -314,9 +314,8 @@ async function processCommands(data: Data): Promise<Buffer> {
     buffer = await processNormalCommands(data, buffer, data.commands.normal);
   }
 
-  return modifyGif(buffer, [{
-    name: '--optimize'
-  }], data.gifsiclePath);
+  if (!(buffer instanceof Buffer)) throw Error('Did not process gif!');
+  return buffer;
 }
 
 export default class GifUtils {

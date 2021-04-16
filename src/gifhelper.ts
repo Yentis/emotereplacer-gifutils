@@ -42,7 +42,13 @@ export async function getBuffer(data: string | Buffer | Stream): Promise<Buffer>
 
 export async function getGifFromBuffer(data: string | Buffer): Promise<Gif> {
   const buffer = await getBuffer(data);
-  return GifUtil.read(buffer);
+  const gif = await GifUtil.read(buffer);
+
+  if (gif.frames.length > 200) {
+    throw Error('Image too large, advanced modifiers not supported!');
+  }
+
+  return gif;
 }
 
 export function alignGif(frames: GifFrame[], interval: number): GifFrame[] {
